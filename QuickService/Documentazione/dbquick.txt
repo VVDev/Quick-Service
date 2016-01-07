@@ -1,0 +1,100 @@
+# SQL Manager 2007 Lite for MySQL 4.0.5.1
+# ---------------------------------------
+# Host     : localhost
+# Port     : 3306
+# Database : dbquick
+
+
+SET FOREIGN_KEY_CHECKS=0;
+
+CREATE DATABASE `dbquick`
+    CHARACTER SET 'latin1'
+    COLLATE 'latin1_swedish_ci';
+
+USE `dbquick`;
+
+
+
+#
+# Structure for the `attivita` table : 
+#
+
+DROP TABLE IF EXISTS `attivita`;
+
+CREATE TABLE `attivita` (
+  `Id`                int(3) NOT NULL,
+  `Nome`              varchar(20) default NULL,
+  `Descrizione`       varchar(100) default NULL,
+  `DataA`             date NOT NULL,
+  `Ora`               time NOT NULL,
+  `Posti_disponibili` int(11) default NULL,
+  `Prezzo`            float default NULL,
+  PRIMARY KEY  (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+#
+# Structure for the `ruolo` table : 
+#
+
+DROP TABLE IF EXISTS `ruolo`;
+
+CREATE TABLE `ruolo` (
+  `Codice`      char(3) NOT NULL,
+  `Descrizione` varchar(10) default NULL,
+  PRIMARY KEY  (`Codice`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+#
+# Structure for the `utente` table : 
+#
+
+DROP TABLE IF EXISTS `utente`;
+
+CREATE TABLE `utente` (
+  `Cf`           char(16) NOT NULL,
+  `Nome`         varchar(20) NOT NULL,
+  `Cognome`      varchar(20) NOT NULL,
+  `User_name`    char(5) NOT NULL,
+  `Password`     char(5) NOT NULL,
+  `Codice_ruolo` char(3) NOT NULL,
+  PRIMARY KEY  (`Cf`),
+  KEY `Utente_ibfk_1` (`Codice_ruolo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# Structure for the `prenotazioni` table : 
+#
+
+DROP TABLE IF EXISTS `prenotazioni`;
+
+CREATE TABLE `prenotazioni` (
+ `Id`        int(3) NOT NULL,
+ `Cf`        char(16)  NOT NULL,
+ `posti`     int(11)   default NULL,
+ `Prenotato` varchar(2) default NULL,
+CONSTRAINT `prenotazioni_ibfk_1` FOREIGN KEY (`Id`) REFERENCES `attivita` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
+CONSTRAINT `prenotazioni_ibfk_2` FOREIGN KEY (`Cf`) REFERENCES `utente`   (`Cf`) ON DELETE CASCADE ON UPDATE CASCADE
+
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+
+INSERT INTO `ruolo` (`Codice`, `Descrizione`) VALUES 
+  ('abc','n[\r\n¹');
+
+COMMIT;
+
+
+
+INSERT INTO `utente` (`Cf`, `Nome`, `Cognome`, `User_name`, `Password`, `Codice_ruolo`) VALUES 
+  ('1234567892154698','luca','giordano','luc','gio','003'),
+  ('bbbccc22d33e4441','luca','Francicanava','1','1','002'),
+
+
+COMMIT;
